@@ -49,12 +49,11 @@ def getHumanElapsedTime( elapsed ):
 	
 def getToday2Timestamp():
 	utc_offset_heroku = time.localtime().tm_gmtoff
-	timestamp = time.time()
-	myTimestamp = timestamp - 2 * 3600
+	print(utc_offset_heroku)
 	start_str = time.strftime( "%m/%d/%Y" ) + " 00:00:00"
 	end_str = time.strftime( "%m/%d/%Y ") + " 23:59:59"
-	start_ts = int( time.mktime( time.strptime( start_str, "%m/%d/%Y %H:%M:%S" ) ) ) + utc_offset_heroku - 2 * 3600
-	end_ts = int( time.mktime( time.strptime( end_str, "%m/%d/%Y %H:%M:%S" ) ) )     + utc_offset_heroku - 2 * 3600
+	start_ts = int( time.mktime( time.strptime( start_str, "%m/%d/%Y %H:%M:%S" ) ) ) - utc_offset_heroku + 2 * 3600
+	end_ts = int( time.mktime( time.strptime( end_str, "%m/%d/%Y %H:%M:%S" ) ) )     - utc_offset_heroku + 2 * 3600
 	return start_ts, end_ts
 
 def sendStopwatch(bot, update):

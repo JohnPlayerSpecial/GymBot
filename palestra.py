@@ -31,6 +31,7 @@ ps = db.prepare( STRING_QUERY )
 ps()
 db.close()
 
+
 def start(bot, update):
 	welcomeText = "<b>Welcome!</b>\nUse:\n /stopwatch  to start the session\n/daily get daily total workout time\n/weekly get weekly total workout time\n" + u"\u2063" 
 	bot.sendMessage(chat_id = update.message.chat_id , text = welcomeText, parse_mode="Html")	

@@ -69,7 +69,7 @@ def sendDailyWorkoutTime(bot, update):
 	ps = db.prepare("SELECT * FROM gymTimings WHERE chat_id={} AND start > {} AND stop < {};".format( update.message.chat_id, timestamp0, timestamp24 ) )
 	total = round( sum( [item[4] for item in ps()] ) )
 	chat_id = update.message.chat_id
-	today = datetime.datetime.fromtimestamp( timestamp0 ).strftime('%A %d %b %Y')
+	today = datetime.datetime.fromtimestamp( timestamp0 + 10 ).strftime('%A %d %b %Y')
 	text = "<b>{}</b>\n\nToday total workout seconds: <b>{}s.</b>\nYou worked out for <b>{}</b>".format(today,total, getHumanElapsedTime( total ) )
 	bot.sendMessage(chat_id = chat_id, text = text, parse_mode = "Html")
 	db.close()
@@ -78,7 +78,7 @@ def sendWeeklyWorkoutTime(bot, update):
 	chat_id = update.message.chat_id
 	totalList = []
 	db = postgresql.open(STRING_DB)
-	todayWeekDay = datetime.datetime.fromtimestamp( time.time() + (utc_offset_heroku - 2 * 3600)  ).weekday() 
+	todayWeekDay = datetime.datetime.fromtimestamp( time.time() - utc_offset_heroku + 2 * 3600  ).weekday() 
 	timestampToday0, timestampToday24 = getToday2Timestamp()
 	for i in range( todayWeekDay + 1 ): # + 1 = get also today
 		timestamp0 =   timestampToday0  -  86400 * ( todayWeekDay - i )

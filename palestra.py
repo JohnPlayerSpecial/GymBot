@@ -93,7 +93,7 @@ def sendWeeklyWorkoutTime(bot, update):
 	for i in range( todayWeekDay + 1 ): # + 1 = get also today
 		timestamp0 =   timestampToday0  -  86400 * ( todayWeekDay - i )
 		timestamp24  = timestampToday24 -  86400 * ( todayWeekDay - i )
-		today = datetime.datetime.fromtimestamp( timestamp0 ).strftime('%a %d %b')
+		today = datetime.datetime.fromtimestamp( timestamp0 + 20).strftime('%a %d %b')
 		if totalList[i] == bestDay:
 			string = " :clap::clap::clap: ``` {}: {}```\n".format( today, getHumanElapsedTime(totalList[i]) )
 			text += emojize( string, use_aliases=True) 

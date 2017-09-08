@@ -114,7 +114,7 @@ def answerInlineQuery(bot,update):
 	if (query.data == 'start'):
 		start_time = time.time() - utc_offset_heroku + 2 * 3600 
 		if chat_id  not in dictTimingsByChatID:
-			dictTimingsByChatID[ chat_id ] = time.time()	
+			dictTimingsByChatID[ chat_id ] = start_time	
 		startHour = datetime.datetime.fromtimestamp(start_time).strftime('%H:%M:%S')
 		text = beginSessionText + "\n\nHai dato <b>start</b> alle ore <b>{}</b>".format( startHour ) + "\n" + u"\u2063" + "\n" + u"\u2063" 
 		bot.editMessageText(chat_id = chat_id, message_id = query.message.message_id, text = text, reply_markup = reply_markup, parse_mode = "Html")

@@ -9,32 +9,26 @@ import postgresql
 import datetime
 from emoji import emojize
 import emoji
-
+import os
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-TOKEN = '358258240:AAFC39bY06huw22EOOI85wOLN62Bj5CKiM4'
-keyboard = [[InlineKeyboardButton("start", callback_data='start'),InlineKeyboardButton("stop", callback_data='stop'),]]
-reply_markup = InlineKeyboardMarkup( keyboard )
-
-'''
 TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
 STRING_DB = os.environ['DATABASE_URL'].replace("postgres","pq")
-db = postgresql.open(STRING_DB)
-'''
+APP_NAME = os.environ['APP_NAME']
 
+keyboard = [[InlineKeyboardButton("start", callback_data='start'),InlineKeyboardButton("stop", callback_data='stop'),]]
+reply_markup = InlineKeyboardMarkup( keyboard )
 dictTimingsByChatID = {}
-
 utc_offset_heroku = time.localtime().tm_gmtoff
+beginSessionText = "Tap <b>start</b> to begin session\nTap <b>stop</b> to stop the session"
 
-STRING_DB = 'postgres://unzbtiaxhqfbur:c09a645c29e2bcfb16a0e2747ca3aff56df720cf77a6df4b42353259efaf8c03@ec2-79-125-2-71.eu-west-1.compute.amazonaws.com:5432/d9v4irvpptag7p'.replace("postgres","pq")
+
 db = postgresql.open(STRING_DB)
 STRING_QUERY = "CREATE TABLE IF NOT EXISTS gymTimings ( id SERIAL PRIMARY KEY, chat_id INT, start FLOAT DEFAULT 0, stop FLOAT DEFAULT 0, elapsed FLOAT DEFAULT 0);"
 ps = db.prepare( STRING_QUERY )
 ps()
 db.close()
-
-beginSessionText = "Tap <b>start</b> to begin session\nTap <b>stop</b> to stop the session"
 
 def start(bot, update):
 	welcomeText = "<b>Welcome!</b>\nUse:\n /stopwatch  to start the session\n/daily get daily total workout time\n/weekly get weekly total workout time\n" + u"\u2063" 
@@ -142,7 +136,10 @@ def answerInlineQuery(bot,update):
 		ps()
 		db.close()
 		                     
-updater = Updater(TOKEN)
+PORT = int(os.environ.get('PORT', '8443'))
+updater = Updater(TOKEN_TELEGRAM)
+updater.start_webhook(listen="0.0.0.0", port=PORT, url_path = TOKEN_TELEGRAM)
+updater.bot.set_webhook("https://{}.herokuapp.com/".format(APP_NAME) + TOKEN_TELEGRAM)
 
 updater.dispatcher.add_handler(CommandHandler('start', start) )
 updater.dispatcher.add_handler(CommandHandler('daily', sendDailyWorkoutTime) )
@@ -152,5 +149,4 @@ updater.dispatcher.add_handler( CallbackQueryHandler( callback = answerInlineQue
 
 #j.run_daily(sendDailyWorkoutTime,  time = getMyTimeZoneTime() )
 
-updater.start_polling()
 updater.idle()

@@ -1,1 +1,1 @@
-worker: python palestra.py
+web: python palestra.py

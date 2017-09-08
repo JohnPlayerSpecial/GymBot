@@ -124,7 +124,7 @@ def answerInlineQuery(bot,update):
 			dictTimingsByChatID.pop( chat_id )
 		else:
 			return
-		stop = time.time() - utc_offset_heroku + 2 * 3600 ) 
+		stop = time.time() - utc_offset_heroku + 2 * 3600 
 		timestampDelta = stop - start
 		elapsed = round( timestampDelta, 2)
 		startHour = datetime.datetime.fromtimestamp(start).strftime('%H:%M:%S')

@@ -112,7 +112,7 @@ def answerInlineQuery(bot,update):
 	chat_id = update.callback_query.message.chat_id
 	bot.answerCallbackQuery(callback_query_id = query.id)
 	if (query.data == 'start'):
-		start_time = time.time() + ( utc_offset_heroku - 2 * 3600 ) 
+		start_time = time.time() - utc_offset_heroku + 2 * 3600 
 		if chat_id  not in dictTimingsByChatID:
 			dictTimingsByChatID[ chat_id ] = time.time()	
 		startHour = datetime.datetime.fromtimestamp(start_time).strftime('%H:%M:%S')
@@ -124,7 +124,7 @@ def answerInlineQuery(bot,update):
 			dictTimingsByChatID.pop( chat_id )
 		else:
 			return
-		stop = time.time() + ( utc_offset_heroku - 2 * 3600 ) 
+		stop = time.time() - utc_offset_heroku + 2 * 3600 ) 
 		timestampDelta = stop - start
 		elapsed = round( timestampDelta, 2)
 		startHour = datetime.datetime.fromtimestamp(start).strftime('%H:%M:%S')

@@ -16,6 +16,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
 STRING_DB = os.environ['DATABASE_URL'].replace("postgres","pq")
 APP_NAME = os.environ['APP_NAME']
+PORT = int( os.environ['PORT'] )
 
 keyboard = [[InlineKeyboardButton("start", callback_data='start'),InlineKeyboardButton("stop", callback_data='stop'),]]
 reply_markup = InlineKeyboardMarkup( keyboard )
@@ -136,7 +137,6 @@ def answerInlineQuery(bot,update):
 		ps()
 		db.close()
 		                     
-PORT = int(os.environ.get('PORT', '8443'))
 updater = Updater(TOKEN_TELEGRAM)
 updater.start_webhook(listen="0.0.0.0", port=PORT, url_path = TOKEN_TELEGRAM)
 updater.bot.set_webhook("https://{}.herokuapp.com/".format(APP_NAME) + TOKEN_TELEGRAM)
